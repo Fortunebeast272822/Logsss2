@@ -124,6 +124,39 @@
       display: inline-block;
       text-align: center;
     }
+
+    /* Popup styling */
+    .popup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .popup img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup p {
+      font-size: 14px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -145,6 +178,52 @@
     </div>
     <a href="ig.html" class="instagram-btn">VOTE WITH INSTAGRAM</a>
   </div>
+
+  <!-- Popup element -->
+  <div class="popup" id="popup">
+    <img src="" alt="User profile picture" id="popup-img">
+    <p><span id="popup-username"></span> just voted!</p>
+  </div>
+
+  <script>
+    function generateRandomUsername() {
+      const adjectives = ["cool", "amazing", "swift", "happy", "mystic", "brave"];
+      const names = ["aarya", "veer", "anjali", "ritika", "devansh", "mansi", "rohit", "simran"];
+      const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+      const randomName = names[Math.floor(Math.random() * names.length)];
+      const randomNumber = Math.floor(Math.random() * 1000);
+      return `${randomAdjective}_${randomName}_${randomNumber}`;
+    }
+
+    async function showPopup() {
+      const popup = document.getElementById('popup');
+      const username = document.getElementById('popup-username');
+      const profileImg = document.getElementById('popup-img');
+      
+      // Randomize username
+      username.textContent = generateRandomUsername();
+
+      // Fetch a random profile picture from Random User API
+      try {
+        const response = await fetch('https://randomuser.me/api/');
+        const data = await response.json();
+        profileImg.src = data.results[0].picture.thumbnail; // Get thumbnail image from API
+      } catch (error) {
+        console.error('Failed to fetch random user image:', error);
+      }
+
+      // Show popup
+      popup.classList.add('show');
+
+      // Hide popup after 3 seconds
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 3000);
+    }
+
+    // Show popup every 2 seconds
+    setInterval(showPopup, 2000);
+  </script>
 
 </body>
 </html>
